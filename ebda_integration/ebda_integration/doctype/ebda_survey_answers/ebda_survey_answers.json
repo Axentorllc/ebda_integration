@@ -1,0 +1,42 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-02-25 21:28:58.371862",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "id",
+  "question_text",
+  "answer_text"
+ ],
+ "fields": [
+  {
+   "fieldname": "id",
+   "fieldtype": "Data",
+   "label": "Odoo ID"
+  },
+  {
+   "fieldname": "question_text",
+   "fieldtype": "Data",
+   "label": "Question Text"
+  },
+  {
+   "fieldname": "answer_text",
+   "fieldtype": "Data",
+   "label": "Answer Text"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-02-26 11:01:02.253122",
+ "modified_by": "Administrator",
+ "module": "Ebda Integration",
+ "name": "Ebda Survey Answers",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

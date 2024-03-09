@@ -1,0 +1,65 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2024-03-09 21:37:32.947682",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "odoo_id",
+  "text",
+  "column_break_qhltf",
+  "last_synced_survey"
+ ],
+ "fields": [
+  {
+   "fieldname": "odoo_id",
+   "fieldtype": "Int",
+   "label": "Odoo ID"
+  },
+  {
+   "fieldname": "text",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Text"
+  },
+  {
+   "fieldname": "column_break_qhltf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_synced_survey",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Last Synced Survey"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-03-09 21:43:34.385702",
+ "modified_by": "Administrator",
+ "module": "Ebda Integration",
+ "name": "Odoo Survey Support Type",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "text"
+}

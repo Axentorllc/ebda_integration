@@ -1,0 +1,86 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2024-02-25 21:22:13.022756",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "support_type_id",
+  "trouble_id",
+  "industrial_activity_id",
+  "column_break_remfs",
+  "gov_id",
+  "area_id",
+  "answers_section",
+  "survey_answers"
+ ],
+ "fields": [
+  {
+   "fieldname": "support_type_id",
+   "fieldtype": "Data",
+   "label": "Support Type"
+  },
+  {
+   "fieldname": "trouble_id",
+   "fieldtype": "Data",
+   "label": "Trouble"
+  },
+  {
+   "fieldname": "industrial_activity_id",
+   "fieldtype": "Data",
+   "label": "Industrial Activity"
+  },
+  {
+   "fieldname": "column_break_remfs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gov_id",
+   "fieldtype": "Data",
+   "label": "Gov"
+  },
+  {
+   "fieldname": "area_id",
+   "fieldtype": "Data",
+   "label": "Area"
+  },
+  {
+   "fieldname": "answers_section",
+   "fieldtype": "Section Break",
+   "label": "Answers"
+  },
+  {
+   "fieldname": "survey_answers",
+   "fieldtype": "Table",
+   "label": "Survey Answers",
+   "options": "Ebda Survey Answers"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-02-25 21:31:44.773158",
+ "modified_by": "Administrator",
+ "module": "Ebda Integration",
+ "name": "Ebda Survey",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
