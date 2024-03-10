@@ -7,29 +7,65 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "enabled",
   "username",
-  "password"
+  "password",
+  "api_endpoints_section",
+  "base_url",
+  "column_break_dxdbf",
+  "api_endpoint"
  ],
  "fields": [
   {
+   "depends_on": "enabled",
    "fieldname": "username",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Username",
-   "reqd": 1
+   "mandatory_depends_on": "enabled"
   },
   {
+   "depends_on": "enabled",
    "fieldname": "password",
    "fieldtype": "Password",
    "in_list_view": 1,
    "label": "Password",
-   "reqd": 1
+   "mandatory_depends_on": "enabled"
+  },
+  {
+   "fieldname": "api_endpoints_section",
+   "fieldtype": "Section Break",
+   "label": "API Endpoints"
+  },
+  {
+   "depends_on": "enabled",
+   "fieldname": "base_url",
+   "fieldtype": "Data",
+   "label": "Base URL",
+   "mandatory_depends_on": "enabled"
+  },
+  {
+   "fieldname": "column_break_dxdbf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "enabled",
+   "fieldname": "api_endpoint",
+   "fieldtype": "Data",
+   "label": "API Endpoint",
+   "mandatory_depends_on": "enabled"
+  },
+  {
+   "default": "0",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-03-09 22:00:25.023413",
+ "modified": "2024-03-10 16:21:32.505611",
  "modified_by": "Administrator",
  "module": "Ebda Integration",
  "name": "Ebda Integration Settings",
