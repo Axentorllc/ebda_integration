@@ -47,7 +47,6 @@ def get_surveys():
     ebda = EbdaAPI()
     if not ebda.settings.get("enabled"):
         help_msg(ebda.settings.doctype)
-        return
 
     support_types = ebda.get_support_types()
     if support_types:
@@ -74,7 +73,7 @@ def get_odoo_support_types():
 
     if not ebda.settings.get("enabled"):
         help_msg(ebda.settings.doctype)
-        return
+        
 
     support_types = ebda.get_support_types()
     if support_types:
@@ -83,4 +82,4 @@ def get_odoo_support_types():
 
 def help_msg(doctype: str):
     msg = f"<span class='text-muted'>Please enable the integration from <b>{doctype}</b> Doctype</span>"
-    frappe.msgprint(msg=f"Ebda Integration is disabled <br><hr>{msg}")
+    frappe.throw(msg=f"Ebda Integration is disabled <br><hr>{msg}")
