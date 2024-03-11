@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from frappe.model.document import Document
 from ebda_integration.ebda_integration.utils import *
 
-
 @dataclass
 class EbdaAPI:
     settings: Document  = frappe.get_single("Ebda Integration Settings")
@@ -43,6 +42,7 @@ class EbdaAPI:
 def get_surveys():
     ebda = EbdaAPI()
     if not ebda.settings.get("enabled"):
+        help_msg(ebda.settings.doctype)
         return
     
     support_types = ebda.get_support_types()
@@ -58,3 +58,18 @@ def get_surveys():
 
            if answers:
                 create_ebda_survey_from(answers, support_type_id)
+@frappe.whitelist()
+def get_odoo_support_types():
+    ebda = EbdaAPI()
+
+    if not ebda.settings.get("enabled"):
+        help_msg(ebda.settings.doctype)
+        return
+    
+    support_types = ebda.get_support_types()
+    if support_types:
+        update_support_types(support_types.get("support_types"))
+        
+def help_msg(doctype: str):
+    msg = f"<span class='text-muted'>Please enable the integration from <b>{doctype}</b> Doctype</span>"
+    frappe.msgprint(msg=f"Ebda Integration is disabled <br><hr>{msg}")
