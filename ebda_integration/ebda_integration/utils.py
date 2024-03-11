@@ -60,7 +60,7 @@ def get_answers_from(survays: list = []) -> list:
 def update_answer_key_value(dictionary):
     for key in dictionary:
         if key.startswith("answer"):
-            dictionary.update({"answer_text": dictionary.pop(key)})
+            dictionary.update({"answer_text": dictionary.pop(key), "answer_type": key})
             return dictionary
     return dictionary
     
