@@ -15,7 +15,7 @@ class EbdaAPI:
     check_session_url: str = "/api/post/v2/check_session"
     login: str = "/api/post/v2/login"
 
-    @frappe.whitelist()
+
     def auth(self):
         url = self.base_url + self.login
         try:
@@ -85,7 +85,14 @@ class EbdaAPI:
             frappe.throw(f"An error occurred: {e}")
             return None
 
+@frappe.whitelist()
+def _auth():
+    EbdaAPI().auth()
 
+@frappe.whitelist()
+def _refresh_token():
+    EbdaAPI().check_session()
+    
 @frappe.whitelist()
 def get_surveys():
     ebda = EbdaAPI()
