@@ -91,7 +91,7 @@ def _auth():
 
 @frappe.whitelist()
 def _refresh_token():
-    EbdaAPI().check_session()
+    EbdaAPI().check_token()
     
 @frappe.whitelist()
 def get_surveys():
