@@ -10,6 +10,8 @@
   "enabled",
   "username",
   "password",
+  "column_break_lthvy",
+  "token",
   "api_endpoints_section",
   "base_url",
   "column_break_dxdbf",
@@ -60,12 +62,22 @@
    "fieldname": "enabled",
    "fieldtype": "Check",
    "label": "Enabled"
+  },
+  {
+   "depends_on": "enabled",
+   "fieldname": "token",
+   "fieldtype": "Password",
+   "label": "Token"
+  },
+  {
+   "fieldname": "column_break_lthvy",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-03-10 16:21:32.505611",
+ "modified": "2024-04-29 12:18:53.682135",
  "modified_by": "Administrator",
  "module": "Ebda Integration",
  "name": "Ebda Integration Settings",
