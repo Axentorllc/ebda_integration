@@ -19,7 +19,7 @@ class EbdaAPI:
     def auth(self):
         url = self.base_url + self.login
         try:
-            response = requests.get(url, auth=(self.username, self.password))
+            response = requests.post(url, auth=(self.username, self.password), verify=False)
             response.raise_for_status()  # Raises HTTPError for non-200 status codes
             response = response.json()
             if response.status_code == 200:
@@ -37,7 +37,7 @@ class EbdaAPI:
         url = self.base_url + self.check_session_url
         params = frappe._dict({"token": self.settings.get_password("token", False)})
         try:
-            response = requests.get(url, params=params)
+            response = requests.post(url, params=params, verify=False)
             response.raise_for_status()  # Raises HTTPError for non-200 status codes
             response = response.json()
             if response.status_code == 200 and response.message == "Token is active":
@@ -58,7 +58,7 @@ class EbdaAPI:
         url = self.base_url + self.api_endpoint + "support-types"
         try:
             self.check_token()
-            response = requests.get(url, params={"token": self.settings.get_password("token", False)})
+            response = requests.post(url, params={"token": self.settings.get_password("token", False)}, verify=False)
             response.raise_for_status()  # Raises HTTPError for non-200 status codes
             return response.json()
 
@@ -73,8 +73,8 @@ class EbdaAPI:
         try:
             self.check_token()
             params.update({"token": self.settings.get_password("token", False)})
-            response = requests.get(
-                url, params=params)
+            response = requests.post(
+                url, params=params, verify=False)
             response.raise_for_status()
             return response.json()
 
