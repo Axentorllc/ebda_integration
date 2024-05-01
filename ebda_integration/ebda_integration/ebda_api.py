@@ -38,9 +38,9 @@ class EbdaAPI:
     def check_session(self):
         "params: token | return (status_code, message)"
         url = self.base_url + self.check_session_url
-        json = frappe._dict({"token": self.settings.get_password("token", False)})
+        data = frappe._dict({"token": self.settings.get_password("token", False)})
         try:
-            response = requests.post(url, json=json, verify=False)
+            response = requests.post(url, json=data, verify=False)
             response.raise_for_status()  # Raises HTTPError for non-200 status codes
             response = response.json()
             if response.get("status_code") == 200 and response.get("message") == "Token is active":
