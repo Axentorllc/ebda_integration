@@ -104,7 +104,7 @@ def get_surveys():
 
     support_types = ebda.get_support_types()
     if support_types:
-        update_support_types(support_types.get("support_types"))
+        update_support_types(support_types.get("support_types", []))
 
     support_type_list = build_params_for_support_types()
     for params in support_type_list:
