@@ -62,12 +62,12 @@ def get_answers_from(survays: list = []) -> list:
     return answers
 
 
-def update_answer_key_value(dictionary):
-    for key in dictionary:
+def update_answer_key_value(answer: dict):
+    for key in answer:
         if key.startswith("answer"):
-            dictionary.update({"answer_text": cstr(dictionary.pop(key)), "answer_type": cstr(key)})
-            return dictionary
-    return dictionary
+            answer.update({"answer_text": cstr(answer.pop(key)), "answer_type": cstr(key)})
+            return answer
+    return answer
 
 
 def create_ebda_survey_from(answers: list, support_type_id: str):
