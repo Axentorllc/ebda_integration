@@ -131,7 +131,7 @@ def get_odoo_support_types():
 
     support_types = ebda.get_support_types()
     if support_types:
-        update_support_types(support_types.get("support_types"))
+        update_support_types(support_types.get("support_types", []))
 
 
 def help_msg(doctype: str):
