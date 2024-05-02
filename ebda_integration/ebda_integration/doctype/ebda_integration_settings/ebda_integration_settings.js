@@ -7,7 +7,15 @@ frappe.ui.form.on('Ebda Integration Settings', {
 			frappe.call({
 				method: "ebda_integration.ebda_integration.ebda_api._auth",
 				freeze: true,
-				freeze_message: __("Please Wait ...")
+				freeze_message: __("Please Wait ..."),
+				callback: (r) => {
+						// on success
+						if (!r.exe) {
+							frm.reload_doc();
+							frappe.show_alert({message:__("Authenticated Successfully"), indicator:"green"});
+						}
+			
+					},
 			})
 		}, "Actions")
 
@@ -15,7 +23,15 @@ frappe.ui.form.on('Ebda Integration Settings', {
 			frappe.call({
 				method: "ebda_integration.ebda_integration.ebda_api._refresh_token",
 				freeze: true,
-				freeze_message: __("Please Wait ...")
+				freeze_message: __("Please Wait ..."),
+				callback: (r) => {
+						// on success
+						if (!r.exe) {
+							frm.reload_doc();
+							frappe.show_alert({message:__("Token Refreshed Successfully"), indicator:"green"});
+						}
+			
+					},
 			})
 		}, "Actions")
 	}

@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from frappe.model.document import Document
 from ebda_integration.ebda_integration.utils import *
 
-
 @dataclass
 class EbdaAPI:
     settings: Document = frappe.get_single("Ebda Integration Settings")
@@ -19,11 +18,15 @@ class EbdaAPI:
     def auth(self):
         url = self.base_url + self.login
         try:
-            response = requests.get(url, auth=(self.username, self.password))
+            data = {
+                "username": self.username,
+    			"password": self.password,
+			}
+            response = requests.post(url=url, json=data, verify=False)
             response.raise_for_status()  # Raises HTTPError for non-200 status codes
             response = response.json()
-            if response.status_code == 200:
-                frappe.db.set_value(self.settings.doctype, self.settings.doctype, "token", response.token)
+            if response.get("status_code") == 200:
+                frappe.db.set_value(self.settings.doctype, self.settings.doctype, "token", response.get("token"))
                 frappe.db.commit()
             return response
 
@@ -35,12 +38,12 @@ class EbdaAPI:
     def check_session(self):
         "params: token | return (status_code, message)"
         url = self.base_url + self.check_session_url
-        params = frappe._dict({"token": self.settings.get_password("token", False)})
+        data = frappe._dict({"token": self.settings.get_password("token", False)})
         try:
-            response = requests.get(url, params=params)
+            response = requests.post(url, json=data, verify=False)
             response.raise_for_status()  # Raises HTTPError for non-200 status codes
             response = response.json()
-            if response.status_code == 200 and response.message == "Token is active":
+            if response.get("status_code") == 200 and response.get("message") == "Token is active":
                 return True
             return False
         except requests.exceptions.RequestException as e:
@@ -58,7 +61,7 @@ class EbdaAPI:
         url = self.base_url + self.api_endpoint + "support-types"
         try:
             self.check_token()
-            response = requests.get(url, params={"token": self.settings.get_password("token", False)})
+            response = requests.post(url, json={"token": self.settings.get_password("token", False)}, verify=False)
             response.raise_for_status()  # Raises HTTPError for non-200 status codes
             return response.json()
 
@@ -73,10 +76,10 @@ class EbdaAPI:
         try:
             self.check_token()
             params.update({"token": self.settings.get_password("token", False)})
-            response = requests.get(
-                url, params=params)
+            response = requests.post(
+                url, json=params, verify=False)
             response.raise_for_status()
-            return response.json()
+            return response.json().get("surveys")
 
         except requests.exceptions.RequestException as e:
             frappe.log_error(
@@ -101,7 +104,7 @@ def get_surveys():
 
     support_types = ebda.get_support_types()
     if support_types:
-        update_support_types(support_types.get("support_types"))
+        update_support_types(support_types.get("support_types", []))
 
     support_type_list = build_params_for_support_types()
     for params in support_type_list:
@@ -128,7 +131,7 @@ def get_odoo_support_types():
 
     support_types = ebda.get_support_types()
     if support_types:
-        update_support_types(support_types.get("support_types"))
+        update_support_types(support_types.get("support_types", []))
 
 
 def help_msg(doctype: str):

@@ -1,5 +1,5 @@
 import frappe
-from frappe.utils import now_datetime, cstr
+from frappe.utils import now_datetime, cstr, get_datetime_str
 
 
 def build_params_for_support_types():
@@ -8,13 +8,14 @@ def build_params_for_support_types():
         fields=["name", "odoo_id", "text", "last_synced_survey"],
     )
     params = []
+    formate = '%Y-%m-%d %H:%M:%S'
     for support_type in support_types:
         params.append(
             {
                 "name": support_type.get("name"),
                 "support_type_id": support_type.get("odoo_id"),
-                "date_from": support_type.get("last_synced_survey"),
-                "date_to": now_datetime(),
+                "date_from": support_type.get("last_synced_survey").strftime(formate),
+                "date_to": now_datetime().strftime(formate),
             }
         )
     return params
@@ -61,12 +62,12 @@ def get_answers_from(survays: list = []) -> list:
     return answers
 
 
-def update_answer_key_value(dictionary):
-    for key in dictionary:
+def update_answer_key_value(answer: dict):
+    for key in answer:
         if key.startswith("answer"):
-            dictionary.update({"answer_text": dictionary.pop(key), "answer_type": key})
-            return dictionary
-    return dictionary
+            answer.update({"answer_text": cstr(answer.pop(key)), "answer_type": cstr(key)})
+            return answer
+    return answer
 
 
 def create_ebda_survey_from(answers: list, support_type_id: str):
@@ -107,8 +108,8 @@ def create_ebda_survey(
                 "support_type_id": cstr(support_type_id),
                 "trouble_id": cstr(trouble_id),
                 "industrial_activity_id": cstr(industrial_activity_id),
-                "gov_id": gov_id,
-                "area_id": area_id,
+                "gov_id": cstr(gov_id),
+                "area_id": cstr(area_id),
                 "survey_answers": survey_answers,
             }
         )

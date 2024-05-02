@@ -24,7 +24,7 @@
   },
   {
    "fieldname": "answer_text",
-   "fieldtype": "Data",
+   "fieldtype": "Long Text",
    "label": "Answer Text"
   },
   {
@@ -36,7 +36,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-03-11 12:35:43.003928",
+ "modified": "2024-05-01 11:52:12.573940",
  "modified_by": "Administrator",
  "module": "Ebda Integration",
  "name": "Ebda Survey Answers",
