@@ -4,6 +4,45 @@ from dataclasses import dataclass
 from frappe.model.document import Document
 from ebda_integration.ebda_integration.utils import *
 
+import warnings
+import contextlib
+
+
+from urllib3.exceptions import InsecureRequestWarning
+
+old_merge_environment_settings = requests.Session.merge_environment_settings
+
+@contextlib.contextmanager
+def no_ssl_verification():
+    opened_adapters = set()
+
+    def merge_environment_settings(self, url, proxies, stream, verify, cert):
+        # Verification happens only once per connection so we need to close
+        # all the opened adapters once we're done. Otherwise, the effects of
+        # verify=False persist beyond the end of this context manager.
+        opened_adapters.add(self.get_adapter(url))
+
+        settings = old_merge_environment_settings(self, url, proxies, stream, verify, cert)
+        settings['verify'] = False
+
+        return settings
+
+    requests.Session.merge_environment_settings = merge_environment_settings
+
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', InsecureRequestWarning)
+            yield
+    finally:
+        requests.Session.merge_environment_settings = old_merge_environment_settings
+
+        for adapter in opened_adapters:
+            try:
+                adapter.close()
+            except:
+                pass
+
+
 @dataclass
 class EbdaAPI:
     settings: Document = frappe.get_single("Ebda Integration Settings")
@@ -16,40 +55,42 @@ class EbdaAPI:
 
 
     def auth(self):
-        url = self.base_url + self.login
-        try:
-            data = {
-                "username": self.username,
-    			"password": self.password,
-			}
-            response = requests.post(url=url, json=data, verify=False)
-            response.raise_for_status()  # Raises HTTPError for non-200 status codes
-            response = response.json()
-            if response.get("status_code") == 200:
-                frappe.db.set_value(self.settings.doctype, self.settings.doctype, "token", response.get("token"))
-                frappe.db.commit()
-            return response
+        with no_ssl_verification():
+            url = self.base_url + self.login
+            try:
+                data = {
+                    "username": self.username,
+                    "password": self.password,
+                }
+                response = requests.post(url=url, json=data, verify=False)
+                response.raise_for_status()  # Raises HTTPError for non-200 status codes
+                response = response.json()
+                if response.get("status_code") == 200:
+                    frappe.db.set_value(self.settings.doctype, self.settings.doctype, "token", response.get("token"))
+                    frappe.db.commit()
+                return response
 
-        except requests.exceptions.RequestException as e:
-            frappe.log_error(title="Ebda Integration Auth", message=frappe.get_traceback())
-            frappe.throw(f"An error occurred: {e}")
-            return None
+            except requests.exceptions.RequestException as e:
+                frappe.log_error(title="Ebda Integration Auth", message=frappe.get_traceback())
+                frappe.throw(f"An error occurred: {e}")
+                return None
         
     def check_session(self):
-        "params: token | return (status_code, message)"
-        url = self.base_url + self.check_session_url
-        data = frappe._dict({"token": self.settings.get_password("token", False)})
-        try:
-            response = requests.post(url, json=data, verify=False)
-            response.raise_for_status()  # Raises HTTPError for non-200 status codes
-            response = response.json()
-            if response.get("status_code") == 200 and response.get("message") == "Token is active":
-                return True
-            return False
-        except requests.exceptions.RequestException as e:
-            frappe.log_error(title="Check Session", message=frappe.get_traceback())
-            frappe.throw(f"An error occurred: {e}")
-            return None
+        with no_ssl_verification():
+            "params: token | return (status_code, message)"
+            url = self.base_url + self.check_session_url
+            data = frappe._dict({"token": self.settings.get_password("token", False)})
+            try:
+                response = requests.post(url, json=data, verify=False)
+                response.raise_for_status()  # Raises HTTPError for non-200 status codes
+                response = response.json()
+                if response.get("status_code") == 200 and response.get("message") == "Token is active":
+                    return True
+                return False
+            except requests.exceptions.RequestException as e:
+                frappe.log_error(title="Check Session", message=frappe.get_traceback())
+                frappe.throw(f"An error occurred: {e}")
+                return None
         
     def check_token(self):
         if self.check_session():
