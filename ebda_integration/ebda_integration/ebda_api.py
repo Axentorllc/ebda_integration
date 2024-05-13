@@ -66,8 +66,9 @@ class EbdaAPI:
                 _req.raise_for_status()  # Raises HTTPError for non-200 status codes
                 response = _req
                 if response.status_code == 200:
-                    frappe.db.set_value(self.settings.doctype, self.settings.doctype, "token", response.token)
-                    frappe.db.commit()
+                    dir(response)
+                    # frappe.db.set_value(self.settings.doctype, self.settings.doctype, "token", response.token)
+                    # frappe.db.commit()
                 return response
 
             except requests.exceptions.RequestException as e:
