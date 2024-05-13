@@ -62,9 +62,9 @@ class EbdaAPI:
                     "username": self.username,
                     "password": self.password,
                 }
-                response = requests.post(url=url, json=data, verify=False)
-                response.raise_for_status()  # Raises HTTPError for non-200 status codes
-                response = response.json()
+                _req = requests.post(url=url, json=data, verify=False)
+                _req.raise_for_status()  # Raises HTTPError for non-200 status codes
+                response = _req.json()
                 if response.get("status_code") == 200:
                     frappe.db.set_value(self.settings.doctype, self.settings.doctype, "token", response.get("token"))
                     frappe.db.commit()
