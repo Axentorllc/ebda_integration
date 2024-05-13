@@ -67,6 +67,9 @@ class EbdaAPI:
                 response = _req
                 if response.status_code == 200:
                     print(dir(response))
+                    print(response.content)
+                    print(response.iter_lines())
+                    print(response.json())
                     # frappe.db.set_value(self.settings.doctype, self.settings.doctype, "token", response.token)
                     # frappe.db.commit()
                 return response
