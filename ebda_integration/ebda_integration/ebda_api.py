@@ -72,6 +72,7 @@ class EbdaAPI:
 
             except requests.exceptions.RequestException as e:
                 frappe.log_error(title="Ebda Integration Auth", message=frappe.get_traceback())
+                frappe.log_error(title="Ebda Integration Req", message=_req)
                 frappe.throw(f"An error occurred: {e}")
                 return None
         
