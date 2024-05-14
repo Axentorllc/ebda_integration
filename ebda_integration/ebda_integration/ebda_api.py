@@ -66,15 +66,16 @@ class EbdaAPI:
                 _req.raise_for_status()  # Raises HTTPError for non-200 status codes
                 response = _req
                 frappe.log_error(title="Ebda Integration Auth", message=response.content)
-                # if response.status_code == 200:
+                if response.status_code == 200:
                     # print(dir(response))
                     # print(response.iter_lines())
                     # print(vars(response))
                     # print(response.json())
                     # response.content
-                    # if response.ok:
-                    #     frappe.db.set_value(self.settings.doctype, self.settings.doctype, "token", response.token)
-                    #     frappe.db.commit()
+                    if response.ok:
+                        if response.token:
+                            frappe.db.set_value(self.settings.doctype, self.settings.doctype, "token", response.token)
+                            frappe.db.commit()
                 return response
 
             except Exception as e:
