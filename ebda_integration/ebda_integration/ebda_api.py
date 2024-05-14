@@ -65,6 +65,7 @@ class EbdaAPI:
                 _req = requests.post(url=url, json=data, verify=False)
                 _req.raise_for_status()  # Raises HTTPError for non-200 status codes
                 response = _req
+                print(response.content)
                 frappe.log_error(title="Ebda Integration Auth", message=response.content)
                 if response.status_code == 200:
                     # print(dir(response))
